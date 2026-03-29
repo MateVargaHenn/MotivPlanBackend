@@ -1,0 +1,6 @@
+@MotivPlanBackend.WebApi_HostAddress = http://localhost:5282
+
+GET {{MotivPlanBackend.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

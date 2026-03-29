@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/Core/">
+    <Project Path="MotivPlanBackend.Application/MotivPlanBackend.Application.csproj" />
+    <Project Path="MotivPlanBackend.Domain/MotivPlanBackend.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="MotivPlanBackend.Infrastructure/MotivPlanBackend.Infrastructure.csproj" />
+    <Project Path="MotivPlanBackend.Persistence/MotivPlanBackend.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/Presentation/">
+    <Project Path="MotivPlanBackend.WebApi/MotivPlanBackend.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/Shared/">
+    <Project Path="MotivPlanBackend.Shared/MotivPlanBackend.Shared.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/Test/">
+    <Project Path="MotivPlanBackend.UnitTest/MotivPlanBackend.UnitTest.csproj" Id="5ad20211-89d0-4fe8-b090-bd73aab7af02" />
+  </Folder>
+</Solution>
