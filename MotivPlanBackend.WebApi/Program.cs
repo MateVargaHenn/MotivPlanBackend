@@ -1,10 +1,20 @@
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using MotivPlanBackend.Application;
+using MotivPlanBackend.Infrastructure;
+using MotivPlanBackend.Persistence;
+using MotivPlanBackend.WebApi;
+using Serilog;
+
+// Builder: .NET 10.0
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Host
+builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
 
-builder.Services.AddControllers();
+// Add services to the container.
+builder.Services.AddApplication().AddInfrastructure(builder.Environment).AddPersistence(builder.Host).AddWebApi();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
@@ -12,12 +22,31 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "MotivPlan's Official Web API V1"));
+}
+else
+{
+    app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
+app.MapHealthChecks("health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+
+app.UseCors("MyAllowSpecificOrigins");
 
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+app.UseExceptionHandler();
+
+await app.RunAsync();
+
+namespace MotivPlanBackend.WebApi
+{
+    internal partial class Program;
+}

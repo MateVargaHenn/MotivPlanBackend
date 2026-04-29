@@ -1,3 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <ItemGroup>
+    <ProjectReference Include="..\MotivPlanBackend.Shared\MotivPlanBackend.Shared.csproj" />
+  </ItemGroup>
 </Project>

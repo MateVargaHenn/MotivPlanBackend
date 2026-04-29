@@ -14,10 +14,11 @@
     <Project Path="MotivPlanBackend.Shared/MotivPlanBackend.Shared.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
   </Folder>
   <Folder Name="/Test/">
-    <Project Path="MotivPlanBackend.UnitTest/MotivPlanBackend.UnitTest.csproj" Id="5ad20211-89d0-4fe8-b090-bd73aab7af02" />
+    <Project Path="MotivPlanBackend.UnitTest/MotivPlanBackend.Test.csproj" Id="5ad20211-89d0-4fe8-b090-bd73aab7af02" />
   </Folder>
 </Solution>
