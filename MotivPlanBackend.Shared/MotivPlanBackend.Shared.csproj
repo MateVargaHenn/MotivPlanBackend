@@ -1,8 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Extensions\" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
-
 </Project>

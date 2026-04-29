@@ -1,3 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	
+		<ItemGroup>
+			<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		</ItemGroup>
+		
+		<ItemGroup>
+		<PackageReference Include="AutoMapper" />
+		<PackageReference Include="FluentValidation" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="MediatR" />
+		<PackageReference Include="Scrutor" />
+		<PackageReference Include="Serilog" />
+	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MotivPlanBackend.Domain\MotivPlanBackend.Domain.csproj" />
+	<ProjectReference Include="..\MotivPlanBackend.Shared\MotivPlanBackend.Shared.csproj" />
+  </ItemGroup>
 </Project>
