@@ -26,6 +26,7 @@ internal static class IntegrationTestFactory
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         services.AddScoped<GetWorkoutByIdQueryHandler>();
+        services.AddScoped<SetWorkoutStatusCommandHandler>();
 
         return services.BuildServiceProvider();
     }
