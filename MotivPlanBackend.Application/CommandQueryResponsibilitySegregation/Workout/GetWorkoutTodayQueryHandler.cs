@@ -14,15 +14,17 @@ public sealed class GetWorkoutTodayQueryHandler(IMotivPlanDbContext context, ILo
     private readonly ILogger<GetWorkoutByIdQueryHandler> _logger = logger;
     public async Task<Result<WorkoutExerciseDataTransferObject>> Handle(GetWorkoutTodayQuery request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Start queueing Workout...");
-        var workout = await _context.Workouts
-            .Where(w => w.Schedule == DateOnly.FromDateTime(DateTime.UtcNow))
-            .Select(w => new WorkoutExerciseDataTransferObject
+        _logger.StartQueuingWorkout();
+        var workout = await _context.UserWorkout
+            .Include(userWorkout => userWorkout.Workout)
+            .Where(userWorkout => userWorkout.Schedule == DateOnly.FromDateTime(DateTime.UtcNow))
+            .Select(userWorkout => new WorkoutExerciseDataTransferObject
             (
-                w.Id,
-                w.Title,
-                w.Schedule,
-                w.WorkoutsExercises.Select(we => new ExerciseDataTransferObject
+                userWorkout.Id,
+                userWorkout.Workout.Title,
+                userWorkout.Schedule,
+                userWorkout.WorkoutStatus,
+                userWorkout.Workout.WorkoutsExercises.Select(we => new ExerciseDataTransferObject
                 (
                     we.Exercise.Id,
                     we.Exercise.Title,
@@ -34,14 +36,13 @@ public sealed class GetWorkoutTodayQueryHandler(IMotivPlanDbContext context, ILo
                 )).ToList()
             )).FirstOrDefaultAsync(cancellationToken);
 
-        _logger.LogInformation("Check workout instance is not null...");
+        _logger.CheckWorkoutInstanceIsNotNull();
         if (workout == null)
         {
-            _logger.LogError("Workout instance is null. Return not found status.");
+            _logger.WorkoutQueryFailedToday();
             return Result.Failure<WorkoutExerciseDataTransferObject>(Error.NotFound(nameof(workout)));
         }
-
-        _logger.LogInformation("Workout is not null. Return instance.", workout);
+        _logger.WorkoutIsNotNullReturningInstance(workout.Id);
         return Result<WorkoutExerciseDataTransferObject>.Success(workout);
     }
 }

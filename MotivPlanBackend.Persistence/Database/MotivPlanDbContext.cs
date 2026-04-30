@@ -7,19 +7,17 @@ using MotivPlanBackend.Shared.Common;
 
 namespace MotivPlanBackend.Persistence.Database;
 
-public sealed class MotivPlanDbContext
-    : DbContext, IMotivPlanDbContext
+public sealed class MotivPlanDbContext(DbContextOptions<MotivPlanDbContext> options,
+    IDomainEventsDispatcher? domainEventsDispatcher)
+        : DbContext(options), IMotivPlanDbContext
 {
-    private readonly IDomainEventsDispatcher? _domainEventsDispatcher;
+    private readonly IDomainEventsDispatcher? _domainEventsDispatcher = domainEventsDispatcher;
 
-    public DbSet<WorkoutEntity> Workouts { get; set; }
     public DbSet<ExerciseEntity> Exercises { get; set; }
+    public DbSet<UserWorkoutEntity> UserWorkout { get; set; }
+    public DbSet<WorkoutEntity> Workouts { get; set; }
     public DbSet<WorkoutExerciseEntity> WorkoutsExercises { get; set; }
-
-    public MotivPlanDbContext(DbContextOptions<MotivPlanDbContext> options,
-        IDomainEventsDispatcher? domainEventsDispatcher)
-        : base(options) =>
-            _domainEventsDispatcher = domainEventsDispatcher;
+    public DbSet<WorkoutStatusEntity> WorkoutStatus { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -30,12 +28,14 @@ public sealed class MotivPlanDbContext
         modelBuilder
             .HasDefaultSchema(Schemas.Default)
             .UseCollation("utf8_general_ci");
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(MotivPlanDbContext).Assembly);
+        modelBuilder?.ApplyConfigurationsFromAssembly(typeof(MotivPlanDbContext).Assembly);
 
         // Existing entity model builders
-        new ExerciseEntityModelBuilder().ConfigureModel(modelBuilder);
-        new WorkoutEntityModelBuilder().ConfigureModel(modelBuilder);
-        new WorkoutExerciseEntityModelBuilder().ConfigureModel(modelBuilder);
+        new ExerciseEntityModelBuilder().ConfigureModel(modelBuilder!);
+        new WorkoutEntityModelBuilder().ConfigureModel(modelBuilder!);
+        new WorkoutExerciseEntityModelBuilder().ConfigureModel(modelBuilder!);
+        new WorkoutStatusEntityModelBuilder().ConfigureModel(modelBuilder!);
+        new UserWorkoutEntityModelBuilder().ConfigureModel(modelBuilder!);
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

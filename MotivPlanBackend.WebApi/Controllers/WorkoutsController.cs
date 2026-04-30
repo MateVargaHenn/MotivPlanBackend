@@ -33,4 +33,23 @@ public class WorkoutsController(IMediator mediator) : ControllerBase
             _ => BadRequest()
         };
     }
+
+    [HttpPost("set-status")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> SetWorkoutStatus(SetWorkoutStatusCommand command)
+    {
+        var result = await _mediator.Send(command);
+
+        if (result.IsSuccess)
+        {
+            return RedirectToAction(nameof(GetWorkoutToday));
+        }
+        return result.Error.Type switch
+        {
+            ErrorType.NotFound => NotFound(result),
+            _ => BadRequest()
+        };
+    }
 }

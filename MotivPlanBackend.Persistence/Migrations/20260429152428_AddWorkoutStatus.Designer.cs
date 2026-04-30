@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotivPlanBackend.Persistence.Database;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MotivPlanBackend.Persistence.Migrations
 {
     [DbContext(typeof(MotivPlanDbContext))]
-    partial class MotivPlanDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260429152428_AddWorkoutStatus")]
+    partial class AddWorkoutStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,56 +62,6 @@ namespace MotivPlanBackend.Persistence.Migrations
                     b.ToTable("Exercises", "public");
                 });
 
-            modelBuilder.Entity("MotivPlanBackend.Domain.Entities.UserWorkoutEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CancelledAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("CompletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("LastModified")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasDefaultValue("System");
-
-                    b.Property<DateOnly>("Schedule")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime?>("StartedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("WorkoutId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("WorkoutStatus")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WorkoutId");
-
-                    b.HasIndex("WorkoutStatus");
-
-                    b.ToTable("UserWorkout", "public");
-                });
-
             modelBuilder.Entity("MotivPlanBackend.Domain.Entities.WorkoutEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -128,6 +81,9 @@ namespace MotivPlanBackend.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasDefaultValue("System");
+
+                    b.Property<DateOnly>("Schedule")
+                        .HasColumnType("date");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -191,24 +147,6 @@ namespace MotivPlanBackend.Persistence.Migrations
                     b.ToTable("WorkoutStatus", "public");
                 });
 
-            modelBuilder.Entity("MotivPlanBackend.Domain.Entities.UserWorkoutEntity", b =>
-                {
-                    b.HasOne("MotivPlanBackend.Domain.Entities.WorkoutEntity", "Workout")
-                        .WithMany("UsersWorkouts")
-                        .HasForeignKey("WorkoutId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MotivPlanBackend.Domain.Entities.WorkoutStatusEntity", "WorkoutStatusEntity")
-                        .WithMany("UsersWorkouts")
-                        .HasForeignKey("WorkoutStatus")
-                        .IsRequired();
-
-                    b.Navigation("Workout");
-
-                    b.Navigation("WorkoutStatusEntity");
-                });
-
             modelBuilder.Entity("MotivPlanBackend.Domain.Entities.WorkoutExerciseEntity", b =>
                 {
                     b.HasOne("MotivPlanBackend.Domain.Entities.ExerciseEntity", "Exercise")
@@ -235,14 +173,7 @@ namespace MotivPlanBackend.Persistence.Migrations
 
             modelBuilder.Entity("MotivPlanBackend.Domain.Entities.WorkoutEntity", b =>
                 {
-                    b.Navigation("UsersWorkouts");
-
                     b.Navigation("WorkoutsExercises");
-                });
-
-            modelBuilder.Entity("MotivPlanBackend.Domain.Entities.WorkoutStatusEntity", b =>
-                {
-                    b.Navigation("UsersWorkouts");
                 });
 #pragma warning restore 612, 618
         }

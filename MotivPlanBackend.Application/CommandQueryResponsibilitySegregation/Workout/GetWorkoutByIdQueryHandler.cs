@@ -12,14 +12,17 @@ public sealed class GetWorkoutByIdQueryHandler(IMotivPlanDbContext context) : IQ
     private readonly IMotivPlanDbContext _context = context;
     public async Task<Result<WorkoutExerciseDataTransferObject>> Handle(GetWorkoutByIdQuery request, CancellationToken cancellationToken)
     {
-        var workout = await _context.Workouts
+        var workout = await _context.UserWorkout
+            .Include(x => x.Workout)
+            .ThenInclude(w => w.WorkoutsExercises)
             .Where(w => w.Id == request.WorkoutDto.Id)
             .Select(w => new WorkoutExerciseDataTransferObject
             (
                 w.Id,
-                w.Title,
+                w.Workout.Title,
                 w.Schedule,
-                w.WorkoutsExercises.Select(we => new ExerciseDataTransferObject
+                w.WorkoutStatus,
+                w.Workout.WorkoutsExercises.Select(we => new ExerciseDataTransferObject
                 (
                     we.Exercise.Id,
                     we.Exercise.Title,

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System.Net;
 
 namespace MotivPlanBackend.Application.Attributes;
@@ -29,13 +30,18 @@ public sealed class ValidateModelStateAttribute : ActionFilterAttribute
             })
             .ToArray();
 
-        var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<ValidateModelStateAttribute>>();
         var validationErrors = string.Join($",{Environment.NewLine} ", errors);
 
 
         context.Result = new JsonResult(errors)
         {
-            StatusCode = (int)HttpStatusCode.BadRequest
+            StatusCode = (int)HttpStatusCode.BadRequest,
+            ContentType = "application/json",
+            SerializerSettings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented
+            },
+            Value = validationErrors
         };
     }
 }

@@ -1,51 +1,71 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using MotivPlanBackend.Application.Abstractions.Data;
+using MotivPlanBackend.Persistence.Constants;
 using MotivPlanBackend.Persistence.Database;
+using MotivPlanBackend.Persistence.Seeders;
+using MotivPlanBackend.Shared.Common;
 
 namespace MotivPlanBackend.Persistence;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPersistence(this IServiceCollection services, IHostBuilder hostBuilder) =>
-        services
+    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+    {
+        Ensure.NotNull(configuration);
+        return services
         .AddServices()
-        .AddDatabase(hostBuilder);
+        .AddDatabase(configuration)
+        .AddHealthCheck(configuration);
+    }
 
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IMotivPlanDbContext, MotivPlanDbContext>();
         return services;
     }
-    private static IServiceCollection AddDatabase(this IServiceCollection services, IHostBuilder hostBuilder)
+    private static IServiceCollection AddDatabase(
+    this IServiceCollection services,
+    IConfiguration configuration)
     {
-        string? connectionString = Environment.GetEnvironmentVariable("MotivPlan:Db:PostGres:ConnectionString");
+        var connectionString =
+            configuration.GetSection("MotivPlan:Db:PostGres")
+                         .GetValue<string>("ConnectionString");
+
+        if (string.IsNullOrWhiteSpace(connectionString))
+            throw new InvalidOperationException("PostgreSQL connection string is missing.");
 
         services.AddDbContext<MotivPlanDbContext>(
             options =>
             {
-                options
-                .UseNpgsql(connectionString, npgsqlOptions =>
-                    npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default));
-            }, ServiceLifetime.Transient, ServiceLifetime.Singleton);
+                options.UseNpgsql(connectionString, npgsqlOptions =>
+                    npgsqlOptions.MigrationsHistoryTable(
+                        HistoryRepository.DefaultTableName,
+                        Schemas.Default));
+            },
+            ServiceLifetime.Transient,
+            ServiceLifetime.Singleton);
 
         services.AddScoped<IMotivPlanDbContext, MotivPlanDbContext>();
 
         services.AddDbContextFactory<MotivPlanDbContext>(
             options =>
             {
-                options
-                .UseNpgsql(connectionString, npgsqlOptions =>
-                    npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default));
+                options.UseNpgsql(connectionString, npgsqlOptions =>
+                    npgsqlOptions.MigrationsHistoryTable(
+                        HistoryRepository.DefaultTableName,
+                        Schemas.Default));
             });
 
         return services;
     }
-    private static IServiceCollection AddHealthCheck(this IServiceCollection services)
+
+    private static IServiceCollection AddHealthCheck(this IServiceCollection services, IConfiguration configuration)
     {
-        string? connectionString = Environment.GetEnvironmentVariable("MotivPlan:Db:PostGres:ConnectionString");
+        string? connectionString = configuration.GetSection("MotivPlan:Db:PostGres")
+                         .GetValue<string>("ConnectionString");
 
         services
             .AddHealthChecks()

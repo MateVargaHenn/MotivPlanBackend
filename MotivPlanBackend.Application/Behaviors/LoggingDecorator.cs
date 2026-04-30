@@ -3,7 +3,9 @@ using MotivPlanBackend.Application.Abstractions.Messaging;
 using MotivPlanBackend.Shared.Common;
 using Serilog.Context;
 
+#pragma warning disable S3903 // Types should be defined in named namespaces
 internal static partial class LoggingDecorator
+#pragma warning restore S3903 // Types should be defined in named namespaces
 {
     internal sealed class CommandHandler<TCommand, TResponse>(
         ICommandHandler<TCommand, TResponse> innerHandler,
@@ -71,13 +73,13 @@ internal static partial class LoggingDecorator
         : IQueryHandler<TQuery, TResponse>
         where TQuery : IQuery<TResponse>
     {
-        public async Task<Result<TResponse>> Handle(TQuery query, CancellationToken cancellationToken)
+        public async Task<Result<TResponse>> Handle(TQuery request, CancellationToken cancellationToken)
         {
             string queryName = typeof(TQuery).Name;
 
             DecoratorLogs.ProcessingQuery(logger, queryName);
 
-            Result<TResponse> result = await innerHandler.Handle(query, cancellationToken);
+            Result<TResponse> result = await innerHandler.Handle(request, cancellationToken);
 
             if (result.IsSuccess)
             {
@@ -96,7 +98,9 @@ internal static partial class LoggingDecorator
     }
 }
 
+#pragma warning disable S3903 // Types should be defined in named namespaces
 internal static partial class DecoratorLogs
+#pragma warning restore S3903 // Types should be defined in named namespaces
 {
     [LoggerMessage(
         EventId = 1000,

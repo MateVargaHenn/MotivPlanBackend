@@ -9,7 +9,7 @@ namespace MotivPlanBackend.Infrastructure;
 
 public static class InfrastructureDependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IHostEnvironment environment) =>
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services) =>
         services
             .AddServices();
 

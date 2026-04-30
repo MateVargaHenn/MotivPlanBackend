@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MotivPlanBackend.Application;
 using MotivPlanBackend.Infrastructure;
 using MotivPlanBackend.Persistence;
+using MotivPlanBackend.Persistence.Extensions;
 using MotivPlanBackend.WebApi;
 using Serilog;
 
@@ -13,10 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
 
 // Add services to the container.
-builder.Services.AddApplication().AddInfrastructure(builder.Environment).AddPersistence(builder.Host).AddWebApi();
+builder.Services.AddApplication().AddInfrastructure().AddPersistence(builder.Configuration).AddWebApi();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
 var app = builder.Build();
+
+await app.SeedDatabaseAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
