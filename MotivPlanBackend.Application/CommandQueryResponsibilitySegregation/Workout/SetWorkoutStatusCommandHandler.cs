@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MotivPlanBackend.Application.Abstractions.Data;
 using MotivPlanBackend.Application.Abstractions.Messaging;
-using MotivPlanBackend.Application.Features.DataTransferObjects.Exercise;
-using MotivPlanBackend.Application.Features.DataTransferObjects.Workout;
 using MotivPlanBackend.Domain.Enums;
 using MotivPlanBackend.Shared.Common;
 
