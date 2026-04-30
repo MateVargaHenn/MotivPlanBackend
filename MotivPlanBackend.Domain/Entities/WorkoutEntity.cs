@@ -7,9 +7,10 @@ public sealed class WorkoutEntity : Entity
     private readonly List<WorkoutExerciseEntity> _workoutsExercises = [];
 
     public string Title { get; set; } = string.Empty;
-    public DateOnly Schedule { get; set; }
     public IReadOnlyCollection<WorkoutExerciseEntity> WorkoutsExercises =>
         _workoutsExercises.AsReadOnly();
+
+    public ICollection<UserWorkoutEntity> UsersWorkouts { get; } = [];
 
     public void AddExercise(
         int exerciseId,

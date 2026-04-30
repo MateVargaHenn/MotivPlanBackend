@@ -1,6 +1,6 @@
 ﻿namespace MotivPlanBackend.Domain.Entities;
 
-public sealed class WorkoutExerciseEntity
+public sealed class WorkoutExerciseEntity 
 {
     public int WorkoutId { get; set; }
     public int ExerciseId { get; set; }

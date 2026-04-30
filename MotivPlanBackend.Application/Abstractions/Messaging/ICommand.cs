@@ -3,7 +3,7 @@ using MotivPlanBackend.Shared.Common;
 
 namespace MotivPlanBackend.Application.Abstractions.Messaging;
 
-public interface ICommand : IRequest
+public interface ICommand : IRequest<Result>
 {
 }
 

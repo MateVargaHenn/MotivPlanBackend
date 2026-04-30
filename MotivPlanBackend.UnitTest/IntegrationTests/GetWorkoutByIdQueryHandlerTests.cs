@@ -46,7 +46,6 @@ public sealed class GetWorkoutByIdQueryHandlerTests
         {
             Id = 1,
             Title = "Daily workout",
-            Schedule = DateOnly.FromDateTime(_dateTimeProvider.UtcNow),
             LastModified = _dateTimeProvider.UtcNow,
             ModifiedBy = "System"
         };

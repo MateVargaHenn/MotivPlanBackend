@@ -18,7 +18,7 @@ internal static class IntegrationTestFactory
         services.AddScoped<IDomainEventsDispatcher, TestDomainEventsDispatcher>();
 
         services.AddDbContext<MotivPlanDbContext>(options =>
-            options.UseNpgsql("Host=localhost; Database=MotivPlan; Username=postgres; Password=6f6q5n]DCBKm"));
+            options.UseNpgsql("Host=localhost; Database=motivplan; Username=motivplan; Password=motivplan"));
 
         services.AddScoped<IMotivPlanDbContext>(sp =>
             sp.GetRequiredService<MotivPlanDbContext>());
