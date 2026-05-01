@@ -1,21 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using MotivPlanBackend.Persistence.Dispatchers;
 
 namespace MotivPlanBackend.Persistence.Database.Factory;
 
-public class MotivPlanDbContextFactory : IDesignTimeDbContextFactory<MotivPlanDbContext>
+public class MotivPlanDbContextFactory : IDbContextFactory<MotivPlanDbContext>
 {
-    public MotivPlanDbContext CreateDbContext(string[] args)
+    public MotivPlanDbContext CreateDbContext()
     {
-        var optionsBuilder = new DbContextOptionsBuilder<MotivPlanDbContext>();
-
-        string connStr = Environment.GetEnvironmentVariable("MotivPlan:Db:PostGres:ConnectionString")
+        string connStr = Environment.GetEnvironmentVariable("MotivPlan__Db__PostGres__ConnectionString")
                          ?? throw new InvalidOperationException("Environment variable 'MotivPlan:Db:PostGres:ConnectionString' is not set.");
         DbContextOptions<MotivPlanDbContext> options = new DbContextOptionsBuilder<MotivPlanDbContext>()
                                                             .UseNpgsql(connStr, x => x.MigrationsAssembly(typeof(MotivPlanDbContext).Assembly.FullName))
                                                             .Options;
 
-        return new MotivPlanDbContext(optionsBuilder.Options, new NoOpDomainEventsDispatcher());
+        return new MotivPlanDbContext(options, new NoOpDomainEventsDispatcher());
     }
 }
