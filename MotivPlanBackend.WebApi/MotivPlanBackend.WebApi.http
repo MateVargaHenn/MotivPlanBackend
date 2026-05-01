@@ -1,6 +1,6 @@
-@MotivPlanBackend.WebApi_HostAddress = http://localhost:5282
+@MotivPlanBackend.WebApi_HostAddress = https://localhost:60174
 
-GET {{MotivPlanBackend.WebApi_HostAddress}}/weatherforecast/
+GET {{MotivPlanBackend.WebApi_HostAddress}}/api/workouts/today
 Accept: application/json
 
 ###
