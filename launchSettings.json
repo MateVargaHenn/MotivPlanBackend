@@ -4,7 +4,10 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "motivplanbackend.webapi": "StartDebugging"
+        "motivplanbackend.webapi": "StartDebugging",
+        "motivplanbackend.database": "StartWithoutDebugging",
+        "motivplanbackend.rabbitmq": "StartWithoutDebugging",
+        "motivplanbackend.seq": "StartWithoutDebugging"
       }
     }
   }

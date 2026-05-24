@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using MotivPlanBackend.Application.Abstractions.Messaging;
 using MotivPlanBackend.Application.Behaviors;
+using MotivPlanBackend.Application.Managers;
+using MotivPlanBackend.Domain.Entities;
 using MotivPlanBackend.Shared.Common;
 
 namespace MotivPlanBackend.Application;
@@ -30,6 +32,8 @@ public static class ApplicationDependencyInjection
             .AddClasses(classes => classes.AssignableTo(typeof(IDomainEventHandler<>)), publicOnly: false)
             .AsImplementedInterfaces()
             .WithScopedLifetime());
+
+        services.AddScoped<ProfileManager<ProfileEntity>>();
 
         string licenseKey = Environment.GetEnvironmentVariable("MediatR__LicenseKey")!;
         services.AddMediatR(

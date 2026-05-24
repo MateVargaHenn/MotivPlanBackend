@@ -38,9 +38,9 @@ app.MapHealthChecks("health", new HealthCheckOptions
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
 
-
 app.UseCors("MyAllowSpecificOrigins");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

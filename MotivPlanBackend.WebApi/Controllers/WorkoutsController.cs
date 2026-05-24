@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MotivPlanBackend.Application.CommandQueryResponsibilitySegregation.Workout;
+using MotivPlanBackend.Application.Features.Workout;
 using MotivPlanBackend.Shared.Common;
 using System.Diagnostics.CodeAnalysis;
 

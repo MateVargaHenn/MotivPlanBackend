@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using MotivPlanBackend.Application.CommandQueryResponsibilitySegregation.Workout;
 using MotivPlanBackend.Application.Features.DataTransferObjects.Workout;
+using MotivPlanBackend.Application.Features.Workout;
 using MotivPlanBackend.Domain.Entities;
 using MotivPlanBackend.Persistence.Database;
 using MotivPlanBackend.Shared.Common;

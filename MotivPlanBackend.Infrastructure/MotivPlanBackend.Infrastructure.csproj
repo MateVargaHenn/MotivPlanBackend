@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
+	  <PackageReference Include="MassTransit" />
+	  <PackageReference Include="MassTransit.RabbitMQ" />
+	</ItemGroup>
+	<ItemGroup>
 		<ProjectReference Include="..\MotivPlanBackend.Application\MotivPlanBackend.Application.csproj" />
 		<ProjectReference Include="..\MotivPlanBackend.Domain\MotivPlanBackend.Domain.csproj" />
 		<ProjectReference Include="..\MotivPlanBackend.Shared\MotivPlanBackend.Shared.csproj" />
