@@ -27,7 +27,7 @@ internal sealed class WorkoutExerciseEntityModelBuilder : EntityModelBuilderBase
                 .WithMany(x => x.WorkoutsExercises)
                 .HasForeignKey(x => x.ExerciseId);
 
-            builder.ToTable("WorkoutExercises", "public");
+            builder.ToTable("WorkoutExercise", "public");
         });
     }
 }

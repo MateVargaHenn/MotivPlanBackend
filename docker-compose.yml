@@ -7,9 +7,15 @@ services:
       dockerfile: MotivPlanBackend.WebApi/Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      FRONTEND_URL: http://localhost:4200
       ASPNETCORE_URLS: http://+:8080
       MotivPlan__Db__PostGres__ConnectionString: Host=motivplanbackend.database;Port=5432;Database=motivplan;Username=motivplan;Password=motivplan
       MediatR__LicenseKey: eyJhbGciOiJSUzI1NiIsImtpZCI6Ikx1Y2t5UGVubnlTb2Z0d2FyZUxpY2Vuc2VLZXkvYmJiMTNhY2I1OTkwNGQ4OWI0Y2IxYzg1ZjA4OGNjZjkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2x1Y2t5cGVubnlzb2Z0d2FyZS5jb20iLCJhdWQiOiJMdWNreVBlbm55U29mdHdhcmUiLCJleHAiOiIxNzg3NTI5NjAwIiwiaWF0IjoiMTc1NjAyOTUyOCIsImFjY291bnRfaWQiOiIwMTk4ZGI4M2MyYzI3ZDU0OGY3Yzg5NzJkNThhNmZmZSIsImN1c3RvbWVyX2lkIjoiY3RtXzAxazNkcjg5eTNxZzJyaDZkbjc2OGd2Nms4Iiwic3ViX2lkIjoiLSIsImVkaXRpb24iOiIwIiwidHlwZSI6IjIifQ.iyp7uKYGQcRUcCpOhh5QPSI1DlHSkKJtmgAbilPNWsCKfLVEqglBhJOXPQJYCtG_MBfYplC0i28fHM0JoGOXVFcEfGYs_-n0Mkw600l2iEbAWSiVDb-oYaGkWNjhlYT0t0uJqpEpXVBjVpeEGMARlR2Sv5kOP-PHiYYLLBb8XjDP4cIOXS-Eu2eCz5tb1Pr0nYuE2hJkJu_9JjJH0-sOfQD-Ykxlpq9ZzSdNZAGYBsPqQL27Qsf6koMnzjESbDxIPAxM5lRf1KtUCx0z9q4kb2_C0O5zfBsiATFcD1A9VnKP0hommrgTuBR7sBK6Q4jZh8czVxTp733xaV9g-0Gkvg
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: motivplan
+      RabbitMq__Password: motivplan
+      Authentication__Google__ClientId: 385651703458-b1vjr86s4k3l9dhsfivdkvks9hsd87h4.apps.googleusercontent.com
+      Authentication__Google__ClientSecret: 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
     ports:
       - "3000:8080"
     depends_on:
@@ -38,5 +44,19 @@ services:
       - "5341:5341"
       - 8081:80
 
+  motivplanbackend.rabbitmq:
+    container_name: motivplanbackend.rabbitmq
+    image: rabbitmq:4-management
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: motivplan
+      RABBITMQ_DEFAULT_PASS: motivplan
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
 volumes:
   postgres_data:
+  rabbitmq_data:

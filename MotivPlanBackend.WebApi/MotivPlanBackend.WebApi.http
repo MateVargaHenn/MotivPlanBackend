@@ -1,6 +1,27 @@
-@MotivPlanBackend.WebApi_HostAddress = https://localhost:60174
+@MotivPlanBackend.WebApi_HostAddress = http://localhost:3000
 
 GET {{MotivPlanBackend.WebApi_HostAddress}}/api/workouts/today
 Accept: application/json
+
+### Missing required authentication header, should return 200 OK with empty array
+POST {{MotivPlanBackend.WebApi_HostAddress}}/api/accounts/sign-up
+Content-Type: application/json
+{
+  "signUpAccountDto": {
+    "username": "HTMWare",
+    "email": "hodasztimea@gmail.com",
+    "password": "P@ssw0rd123",
+    "confirmPassword": "P@ssw0rd123",
+    "firstName": "Tímea",
+    "lastName": "Hodász",
+    "birthDate": "1993-10-09",
+    "sex": 2,
+    "weight": 90,
+    "height": 168,
+    "preferences": [
+      1
+    ]
+  }
+}
 
 ###

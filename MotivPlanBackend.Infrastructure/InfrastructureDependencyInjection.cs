@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MotivPlanBackend.Application.Abstractions.DomainEvents;
 using MotivPlanBackend.Infrastructure.DomainEvents;
@@ -18,6 +19,23 @@ public static class InfrastructureDependencyInjection
         services.AddHealthChecks();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddTransient<IDomainEventsDispatcher, DomainEventsDispatcher>();
+        services.AddMassTransit(x =>
+        {
+            var host = Environment.GetEnvironmentVariable("RabbitMq__Host")!;
+            var username = Environment.GetEnvironmentVariable("RabbitMq__Username")!;
+            var password = Environment.GetEnvironmentVariable("RabbitMq__Password")!;
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(
+                    host,
+                    h =>
+                    {
+                        h.Username(username);
+                        h.Password(password);
+                    });
+            });
+        });
+
         return services;
     }
     

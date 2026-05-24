@@ -2,11 +2,12 @@
 using Microsoft.Extensions.Logging;
 using MotivPlanBackend.Application.Abstractions.Data;
 using MotivPlanBackend.Application.Abstractions.Messaging;
+using MotivPlanBackend.Application.CommandQueryResponsibilitySegregation.Workout;
 using MotivPlanBackend.Application.Features.DataTransferObjects.Exercise;
 using MotivPlanBackend.Application.Features.DataTransferObjects.Workout;
 using MotivPlanBackend.Shared.Common;
 
-namespace MotivPlanBackend.Application.CommandQueryResponsibilitySegregation.Workout;
+namespace MotivPlanBackend.Application.Features.Workout;
 
 public sealed class GetWorkoutTodayQueryHandler(IMotivPlanDbContext context, ILogger<GetWorkoutByIdQueryHandler> logger) : IQueryHandler<GetWorkoutTodayQuery, WorkoutExerciseDataTransferObject>
 {

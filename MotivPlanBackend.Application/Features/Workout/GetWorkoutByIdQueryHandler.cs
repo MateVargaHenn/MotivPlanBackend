@@ -5,7 +5,7 @@ using MotivPlanBackend.Application.Features.DataTransferObjects.Exercise;
 using MotivPlanBackend.Application.Features.DataTransferObjects.Workout;
 using MotivPlanBackend.Shared.Common;
 
-namespace MotivPlanBackend.Application.CommandQueryResponsibilitySegregation.Workout;
+namespace MotivPlanBackend.Application.Features.Workout;
 
 public sealed class GetWorkoutByIdQueryHandler(IMotivPlanDbContext context) : IQueryHandler<GetWorkoutByIdQuery, WorkoutExerciseDataTransferObject>
 {

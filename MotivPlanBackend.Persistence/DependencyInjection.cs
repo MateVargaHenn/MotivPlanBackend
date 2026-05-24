@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MotivPlanBackend.Application.Abstractions.Data;
-using MotivPlanBackend.Persistence.Constants;
 using MotivPlanBackend.Persistence.Database;
-using MotivPlanBackend.Persistence.Seeders;
 using MotivPlanBackend.Shared.Common;
 
 namespace MotivPlanBackend.Persistence;
@@ -58,6 +57,11 @@ public static class DependencyInjection
                         HistoryRepository.DefaultTableName,
                         Schemas.Default));
             });
+
+        services
+            .AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<MotivPlanDbContext>()
+            .AddDefaultTokenProviders();
 
         return services;
     }

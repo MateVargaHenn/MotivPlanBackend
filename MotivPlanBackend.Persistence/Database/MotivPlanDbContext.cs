@@ -1,41 +1,54 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MotivPlanBackend.Application.Abstractions.Data;
 using MotivPlanBackend.Application.Abstractions.DomainEvents;
 using MotivPlanBackend.Domain.Entities;
 using MotivPlanBackend.Persistence.BaseOptions.Context.EntityModelBuilders;
+using MotivPlanBackend.Persistence.BaseOptions.Context.EnumEntityModelBuilders;
 using MotivPlanBackend.Shared.Common;
 
 namespace MotivPlanBackend.Persistence.Database;
 
 public sealed class MotivPlanDbContext(DbContextOptions<MotivPlanDbContext> options,
     IDomainEventsDispatcher? domainEventsDispatcher)
-        : DbContext(options), IMotivPlanDbContext
+        : IdentityDbContext<IdentityUser, IdentityRole, string>(options), IMotivPlanDbContext
 {
     private readonly IDomainEventsDispatcher? _domainEventsDispatcher = domainEventsDispatcher;
 
     public DbSet<ExerciseEntity> Exercises { get; set; }
+    public DbSet<PreferenceEntity> Preferences { get; set; }
+    public DbSet<ProfileEntity> Profiles { get; set; }
     public DbSet<UserWorkoutEntity> UserWorkout { get; set; }
     public DbSet<WorkoutEntity> Workouts { get; set; }
     public DbSet<WorkoutExerciseEntity> WorkoutsExercises { get; set; }
     public DbSet<WorkoutStatusEntity> WorkoutStatus { get; set; }
+    public DbSet<SexEntity> Sex { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        Ensure.NotNull(modelBuilder);
-        base.OnModelCreating(modelBuilder);
+        Ensure.NotNull(builder);
+        base.OnModelCreating(builder);
 
         // Base configuration
-        modelBuilder
+        builder
             .HasDefaultSchema(Schemas.Default)
             .UseCollation("utf8_general_ci");
-        modelBuilder?.ApplyConfigurationsFromAssembly(typeof(MotivPlanDbContext).Assembly);
+        builder?.ApplyConfigurationsFromAssembly(typeof(MotivPlanDbContext).Assembly);
 
         // Existing entity model builders
-        new ExerciseEntityModelBuilder().ConfigureModel(modelBuilder!);
-        new WorkoutEntityModelBuilder().ConfigureModel(modelBuilder!);
-        new WorkoutExerciseEntityModelBuilder().ConfigureModel(modelBuilder!);
-        new WorkoutStatusEntityModelBuilder().ConfigureModel(modelBuilder!);
-        new UserWorkoutEntityModelBuilder().ConfigureModel(modelBuilder!);
+        new ExerciseEntityModelBuilder().ConfigureModel(builder!);
+        new WorkoutEntityModelBuilder().ConfigureModel(builder!);
+        new WorkoutExerciseEntityModelBuilder().ConfigureModel(builder!);
+        new WorkoutStatusEntityModelBuilder().ConfigureModel(builder!);
+        new ProfileEntityModelBuilder().ConfigureModel(builder!);
+        new PreferenceEntityModelBuilder().ConfigureModel(builder!);
+        new SexEntityModelBuilder().ConfigureModel(builder!);
+        new UserWorkoutEntityModelBuilder().ConfigureModel(builder!);
+
+        // Identity model builders
+        new IdentityModelBuilder().ConfigureModel(builder!);
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

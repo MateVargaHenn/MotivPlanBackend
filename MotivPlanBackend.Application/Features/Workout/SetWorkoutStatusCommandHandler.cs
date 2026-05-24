@@ -4,7 +4,7 @@ using MotivPlanBackend.Application.Abstractions.Messaging;
 using MotivPlanBackend.Domain.Enums;
 using MotivPlanBackend.Shared.Common;
 
-namespace MotivPlanBackend.Application.CommandQueryResponsibilitySegregation.Workout;
+namespace MotivPlanBackend.Application.Features.Workout;
 
 public sealed class SetWorkoutStatusCommandHandler(IMotivPlanDbContext context) : ICommandHandler<SetWorkoutStatusCommand>
 {

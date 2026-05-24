@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Core/">
     <Project Path="MotivPlanBackend.Application/MotivPlanBackend.Application.csproj" />
+    <Project Path="MotivPlanBackend.Contracts/MotivPlanBackend.Contracts.csproj" Id="a50a37f6-357a-4c14-a22c-54ae7818fc2f" />
     <Project Path="MotivPlanBackend.Domain/MotivPlanBackend.Domain.csproj" />
   </Folder>
   <Folder Name="/Infrastructure/">
@@ -21,6 +22,9 @@
   </Folder>
   <Folder Name="/Test/">
     <Project Path="MotivPlanBackend.UnitTest/MotivPlanBackend.Test.csproj" Id="5ad20211-89d0-4fe8-b090-bd73aab7af02" />
+  </Folder>
+  <Folder Name="/Worker/">
+    <Project Path="MotivPlanBackend.Worker/MotivPlanBackend.Worker.csproj" Id="882f9eb2-72ce-4e54-b760-26ee570b097c" />
   </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />

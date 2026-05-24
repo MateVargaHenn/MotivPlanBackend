@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using MotivPlanBackend.Application.Abstractions.Data;
 using MotivPlanBackend.Application.Abstractions.DomainEvents;
-using MotivPlanBackend.Application.CommandQueryResponsibilitySegregation.Workout;
+using MotivPlanBackend.Application.Features.Workout;
 using MotivPlanBackend.Infrastructure.Time;
 using MotivPlanBackend.Persistence.Database;
 using MotivPlanBackend.Shared.Common;

@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MotivPlanBackend.Domain.Entities;
-using MotivPlanBackend.Persistence.BaseOptions.Context.EntityModelBuilders.Abstractions;
+using MotivPlanBackend.Domain.Enums;
+using MotivPlanBackend.Persistence.BaseOptions.Context.EnumEntityModelBuilders.Abstractions;
 
-namespace MotivPlanBackend.Persistence.BaseOptions.Context.EntityModelBuilders;
+namespace MotivPlanBackend.Persistence.BaseOptions.Context.EnumEntityModelBuilders;
 
-internal class WorkoutStatusEntityModelBuilder : EntityModelBuilderBase
+internal class WorkoutStatusEntityModelBuilder : EnumEntityModelBuilderBase
 {
 #pragma warning disable CA1822 // Mark members as static
 #pragma warning disable S2325 // Methods and properties that don't access instance data should be static
@@ -14,12 +15,7 @@ internal class WorkoutStatusEntityModelBuilder : EntityModelBuilderBase
     {
         modelBuilder.Entity<WorkoutStatusEntity>(builder =>
         {
-            builder.Property(e => e.NormalizedName)
-                    .HasComputedColumnSql("upper(\"Name\")", stored: true)
-                    .IsRequired();
-            builder.Property(e => e.ConcurrencyStamp)
-                    .HasDefaultValueSql("uuid_generate_v1()")
-                    .IsRequired();
+            ConfigureCommonProperties<WorkoutStatusEntity, WorkoutStatus>(builder);
             builder.ToTable("WorkoutStatus", "public");
         });
     }

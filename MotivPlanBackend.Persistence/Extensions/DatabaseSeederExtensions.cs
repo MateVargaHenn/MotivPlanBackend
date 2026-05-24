@@ -17,6 +17,8 @@ public static class DatabaseSeederExtensions
         if (dbContext is not null)
         {
             await WorkoutStatusSeeder.SeedWorkoutStatusAsync(dbContext);
+            await RoleSeeder.SeedRoleAsync(dbContext);
+            await SexSeeder.SeedSexAsync(dbContext);
         }
     }
 }
