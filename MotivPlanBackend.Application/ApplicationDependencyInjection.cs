@@ -5,6 +5,7 @@ using MotivPlanBackend.Application.Behaviors;
 using MotivPlanBackend.Application.Managers;
 using MotivPlanBackend.Domain.Entities;
 using MotivPlanBackend.Shared.Common;
+using System.Reflection;
 
 namespace MotivPlanBackend.Application;
 
@@ -35,15 +36,23 @@ public static class ApplicationDependencyInjection
 
         services.AddScoped<ProfileManager<ProfileEntity>>();
 
-        string licenseKey = Environment.GetEnvironmentVariable("MediatR__LicenseKey")!;
-        services.AddMediatR(
-            config =>
+        string? licenseKey = Environment.GetEnvironmentVariable("MediatR__LicenseKey");
+
+        services.AddMediatR(config =>
+        {
+            if (!string.IsNullOrWhiteSpace(licenseKey))
             {
                 config.LicenseKey = licenseKey;
-                config.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly);
-            });
+            }
 
-        services.AddValidatorsFromAssembly(typeof(ApplicationDependencyInjection).Assembly, includeInternalTypes: true);
+            config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+
+            config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+        });
+
+        services.AddValidatorsFromAssembly(
+            Assembly.GetExecutingAssembly(),
+            includeInternalTypes: true);
         // Application Services
         return services;
     }
