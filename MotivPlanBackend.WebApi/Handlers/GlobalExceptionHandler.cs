@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using FluentValidation;
 
 namespace MotivPlanBackend.WebApi.Handlers;
 
@@ -17,10 +18,15 @@ internal sealed partial class GlobalExceptionHandler(ILogger<GlobalExceptionHand
         Exception exception,
         CancellationToken cancellationToken)
     {
-        LogUnhandledException(exception);
+        if (exception is not ValidationException)
+        {
+            LogUnhandledException(exception);
+        }
 
         ProblemDetails problemDetails = exception switch
         {
+            ValidationException validationException => CreateValidationProblemDetails(validationException),
+
             ArgumentNullException => CreateProblemDetails(
                 "Bad Request",
                 HttpStatusCode.BadRequest,
@@ -59,7 +65,7 @@ internal sealed partial class GlobalExceptionHandler(ILogger<GlobalExceptionHand
         };
 
         httpContext.Response.StatusCode = (int)problemDetails.Status!;
-        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+        await httpContext.Response.WriteAsJsonAsync((object)problemDetails, cancellationToken);
 
         return true;
     }
@@ -79,4 +85,23 @@ internal sealed partial class GlobalExceptionHandler(ILogger<GlobalExceptionHand
             Detail = detail,
             Instance = instance
         };
+
+    private static ValidationProblemDetails CreateValidationProblemDetails(
+    ValidationException validationException)
+    {
+        var errors = validationException.Errors
+            .GroupBy(error => error.PropertyName)
+            .ToDictionary(
+                group => group.Key,
+                group => group
+                    .Select(error => error.ErrorMessage)
+                    .ToArray());
+
+        return new ValidationProblemDetails(errors)
+        {
+            Title = "Validation failed",
+            Status = StatusCodes.Status400BadRequest,
+            Detail = "One or more validation errors occurred."
+        };
+    }
 }

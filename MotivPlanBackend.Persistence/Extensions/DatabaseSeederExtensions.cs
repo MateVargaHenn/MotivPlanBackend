@@ -16,6 +16,7 @@ public static class DatabaseSeederExtensions
 
         if (dbContext is not null)
         {
+            await IdentitySeeder.SeedSuperAdministratorAsync(scope.ServiceProvider);
             await WorkoutStatusSeeder.SeedWorkoutStatusAsync(dbContext);
             await RoleSeeder.SeedRoleAsync(dbContext);
             await SexSeeder.SeedSexAsync(dbContext);

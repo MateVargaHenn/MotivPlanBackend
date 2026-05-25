@@ -1,8 +1,11 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using MotivPlanBackend.Application.Features.Account;
 using MotivPlanBackend.Application.Features.DataTransferObjects.Workout;
 using MotivPlanBackend.Application.Features.Workout;
+using MotivPlanBackend.Contracts.DataTransferObjects.Account;
 using MotivPlanBackend.Domain.Entities;
+using MotivPlanBackend.Domain.Enums;
 using MotivPlanBackend.Persistence.Database;
 using MotivPlanBackend.Shared.Common;
 
@@ -23,6 +26,21 @@ public sealed class GetWorkoutByIdQueryHandlerTests
         using var context = scope.ServiceProvider.GetRequiredService<MotivPlanDbContext>();
         var _dateTimeProvider = scope.ServiceProvider.GetRequiredService<IDateTimeProvider>();
         await context.Database.EnsureCreatedAsync();
+        var unique = Guid.NewGuid().ToString("N");
+
+        var command = new SignUpAccountCommand(new SignUpAccountDto(
+            Username: $"testuser_{unique}",
+            Email: $"test_{unique}@example.com",
+            Password: "Password123!",
+            ConfirmPassword: "Password123!",
+            FirstName: "Test",
+            LastName: "User",
+            BirthDate: new DateOnly(1995, 1, 1),
+            Sex: Sex.Male,
+            Weight: 80,
+            Height: 180,
+            Preferences: new List<Preference> { Preference.Visual, Preference.Spoken }
+        ));
 
         var exercise1 = new ExerciseEntity
         {

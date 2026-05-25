@@ -9,12 +9,17 @@ internal static class RoleSeeder
     public static async Task SeedRoleAsync(IMotivPlanDbContext context)
     {
         var dbValues = await context.Roles.ToListAsync();
-        ICollection<IdentityRole> roles = [
+        ICollection<IdentityRole> roles = [             new IdentityRole
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "SuperAdministrator",
+                NormalizedName = "SUPERADMINISTRATOR"
+            },
              new IdentityRole
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = "Admin",
-                NormalizedName = "ADMIN"
+                Name = "Administrator",
+                NormalizedName = "ADMINISTRATOR"
             },
             new IdentityRole
             {
