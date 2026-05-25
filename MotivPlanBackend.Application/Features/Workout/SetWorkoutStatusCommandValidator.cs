@@ -14,7 +14,9 @@ public sealed class SetWorkoutStatusCommandValidator : AbstractValidator<SetWork
         RuleFor(x => x.WorkoutStatusDto)
             .NotNull().WithMessage("Workout status is required.");
 
-        RuleFor(x => x.WorkoutStatusDto.WorkoutId)
+        When(x => x.WorkoutStatusDto is not null, () =>
+        {
+            RuleFor(x => x.WorkoutStatusDto.WorkoutId)
             .GreaterThan(-1).WithMessage("Workout ID must be greater than -1.")
             .MustAsync(async (workoutId, cancellationToken) =>
             {
@@ -22,7 +24,8 @@ public sealed class SetWorkoutStatusCommandValidator : AbstractValidator<SetWork
                 return workout != null;
             }).WithMessage("Workout not found.");
 
-        RuleFor(x => x.WorkoutStatusDto.Status)
-            .IsInEnum().WithMessage("Invalid status value.");
+            RuleFor(x => x.WorkoutStatusDto.Status)
+                .IsInEnum().WithMessage("Invalid status value.");
+        });
     }
 }
