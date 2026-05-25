@@ -54,8 +54,8 @@ public sealed class SignUpAccountCommandHandler(
             if (duplicateUserName is not null)
                 return Result.Failure<string>(Error.Conflict(duplicateUserName.Code));
 
-            IdentityError firstError = errors[0];
-            return Result.Failure<string>(Error.Problem(firstError.Code));
+
+            return Result.Failure<string>(Error.Problem(string.Join(", ", errors.Select(e => e.Code))));
         }
 
         await userManager.AddToRoleAsync(user, "User");

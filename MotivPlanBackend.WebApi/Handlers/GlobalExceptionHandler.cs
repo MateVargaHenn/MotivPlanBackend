@@ -65,7 +65,7 @@ internal sealed partial class GlobalExceptionHandler(ILogger<GlobalExceptionHand
         };
 
         httpContext.Response.StatusCode = (int)problemDetails.Status!;
-        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+        await httpContext.Response.WriteAsJsonAsync((object)problemDetails, cancellationToken);
 
         return true;
     }
@@ -101,11 +101,7 @@ internal sealed partial class GlobalExceptionHandler(ILogger<GlobalExceptionHand
         {
             Title = "Validation failed",
             Status = StatusCodes.Status400BadRequest,
-            Detail = "One or more validation errors occurred.",
-            Extensions =
-            {
-                ["errors"] = errors
-            }
+            Detail = "One or more validation errors occurred."
         };
     }
 }
