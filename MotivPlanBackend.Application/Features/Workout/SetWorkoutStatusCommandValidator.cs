@@ -12,8 +12,7 @@ public sealed class SetWorkoutStatusCommandValidator : AbstractValidator<SetWork
         _context = context;
 
         RuleFor(x => x.WorkoutStatusDto)
-            .NotNull().WithMessage("Workout status is required.")
-            .When(x => x.WorkoutStatusDto is not null);
+            .NotNull().WithMessage("Workout status is required.");
 
         RuleFor(x => x.WorkoutStatusDto.WorkoutId)
             .GreaterThan(-1).WithMessage("Workout ID must be greater than -1.")

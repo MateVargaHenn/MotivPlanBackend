@@ -7,8 +7,7 @@ public class SignUpAccountCommandValidator : AbstractValidator<SignUpAccountComm
     public SignUpAccountCommandValidator()
     {
         RuleFor(x => x.SignUpAccountDto)
-            .NotNull().WithMessage("Sign Up Account data is required.")
-            .When(x => x.SignUpAccountDto is not null);
+            .NotNull().WithMessage("Sign Up Account data is required.");
         RuleFor(x => x.SignUpAccountDto.Username)
             .NotEmpty().WithMessage("Username is required.")
             .MinimumLength(6).WithMessage("Username must be at least 6 characters long.")
