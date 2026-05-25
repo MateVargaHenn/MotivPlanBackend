@@ -16,9 +16,9 @@ services:
       RabbitMq__Password: motivplan
       Authentication__Google__ClientId: 385651703458-b1vjr86s4k3l9dhsfivdkvks9hsd87h4.apps.googleusercontent.com
       Authentication__Google__ClientSecret: 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
-      APP_SUPERADMIN_EMAIL: superadministrator@motivplan.com
-      APP_SUPERADMIN_USERNAME: superadministrator
-      APP_SUPERADMIN_PASSWORD: P@ssw0rd@123
+      APP_SUPERADMIN_EMAIL: ${APP_SUPERADMIN_EMAIL}
+      APP_SUPERADMIN_USERNAME: ${APP_SUPERADMIN_USERNAME}
+      APP_SUPERADMIN_PASSWORD: ${APP_SUPERADMIN_PASSWORD}
     ports:
       - "3000:8080"
     depends_on:
