@@ -17,7 +17,7 @@ public sealed class SetWorkoutStatusCommandValidator : AbstractValidator<SetWork
         When(x => x.WorkoutStatusDto is not null, () =>
         {
             RuleFor(x => x.WorkoutStatusDto.WorkoutId)
-            .GreaterThan(-1).WithMessage("Workout ID must be greater than -1.")
+            .GreaterThan(0).WithMessage("Workout ID must be greater than 0.")
             .MustAsync(async (workoutId, cancellationToken) =>
             {
                 var workout = await _context.Workouts.FindAsync(new object[] { workoutId }, cancellationToken);
